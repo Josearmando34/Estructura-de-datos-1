@@ -1,16 +1,4 @@
-"""
-MyLinkedList - Implementación de Linked List en Python
-======================================================
-Biblioteca propia con Nodo, Lista Simplemente Enlazada y Lista Doblemente Enlazada.
-"""
-
-
-# ──────────────────────────────────────────────
-# NODO
-# ──────────────────────────────────────────────
 class Node:
-    """Nodo básico para lista simplemente enlazada."""
-
     def __init__(self, data):
         self.data = data
         self.next = None
@@ -20,7 +8,6 @@ class Node:
 
 
 class DoubleNode:
-    """Nodo para lista doblemente enlazada."""
 
     def __init__(self, data):
         self.data = data
@@ -30,26 +17,12 @@ class DoubleNode:
     def __repr__(self):
         return f"DoubleNode({self.data!r})"
 
-
-# ──────────────────────────────────────────────
-# LISTA SIMPLEMENTE ENLAZADA
-# ──────────────────────────────────────────────
 class SinglyLinkedList:
-    """
-    Lista Simplemente Enlazada (Singly Linked List).
-
-    Operaciones soportadas:
-        append, prepend, insert_after, remove, search,
-        get, reverse, to_list, __len__, __iter__, __str__
-    """
-
     def __init__(self):
         self._head = None
         self._size = 0
 
-    # ── Inserción ──────────────────────────────
     def append(self, data):
-        """Agrega un nodo al final. O(n)"""
         new_node = Node(data)
         if self._head is None:
             self._head = new_node
@@ -61,14 +34,12 @@ class SinglyLinkedList:
         self._size += 1
 
     def prepend(self, data):
-        """Agrega un nodo al inicio. O(1)"""
         new_node = Node(data)
         new_node.next = self._head
         self._head = new_node
         self._size += 1
 
     def insert_after(self, target_data, new_data):
-        """Inserta new_data después del nodo que contenga target_data. O(n)"""
         current = self._head
         while current:
             if current.data == target_data:
@@ -81,7 +52,7 @@ class SinglyLinkedList:
         raise ValueError(f"Valor '{target_data}' no encontrado en la lista.")
 
     def insert_at(self, index, data):
-        """Inserta data en la posición dada (0-indexed). O(n)"""
+        
         if index < 0 or index > self._size:
             raise IndexError(f"Índice {index} fuera de rango (tamaño={self._size}).")
         if index == 0:
@@ -95,9 +66,7 @@ class SinglyLinkedList:
         current.next = new_node
         self._size += 1
 
-    # ── Eliminación ────────────────────────────
     def remove(self, data):
-        """Elimina el primer nodo con el valor dado. O(n)"""
         if self._head is None:
             raise ValueError("La lista está vacía.")
         if self._head.data == data:
@@ -129,10 +98,8 @@ class SinglyLinkedList:
         current.next = current.next.next
         self._size -= 1
         return removed
-
-    # ── Búsqueda / Acceso ──────────────────────
+    
     def search(self, data):
-        """Retorna el índice del primer nodo con el valor dado, o -1. O(n)"""
         current = self._head
         index = 0
         while current:
@@ -143,7 +110,6 @@ class SinglyLinkedList:
         return -1
 
     def get(self, index):
-        """Retorna el dato en la posición dada (0-indexed). O(n)"""
         if index < 0 or index >= self._size:
             raise IndexError(f"Índice {index} fuera de rango (tamaño={self._size}).")
         current = self._head
@@ -151,7 +117,6 @@ class SinglyLinkedList:
             current = current.next
         return current.data
 
-    # ── Utilidades ─────────────────────────────
     def reverse(self):
         """Invierte la lista en su lugar. O(n)"""
         prev = None
@@ -164,7 +129,6 @@ class SinglyLinkedList:
         self._head = prev
 
     def to_list(self):
-        """Convierte la lista enlazada a una lista de Python. O(n)"""
         result = []
         current = self._head
         while current:
@@ -175,7 +139,6 @@ class SinglyLinkedList:
     def is_empty(self):
         return self._size == 0
 
-    # ── Métodos especiales ─────────────────────
     def __len__(self):
         return self._size
 
@@ -196,24 +159,13 @@ class SinglyLinkedList:
         return f"SinglyLinkedList({self.to_list()!r})"
 
 
-# ──────────────────────────────────────────────
-# LISTA DOBLEMENTE ENLAZADA
-# ──────────────────────────────────────────────
 class DoublyLinkedList:
-    """
-    Lista Doblemente Enlazada (Doubly Linked List).
-
-    Operaciones soportadas:
-        append, prepend, insert_after, remove, search,
-        get, reverse, to_list, __len__, __iter__, __str__
-    """
 
     def __init__(self):
         self._head = None
         self._tail = None
         self._size = 0
 
-    # ── Inserción ──────────────────────────────
     def append(self, data):
         """Agrega al final. O(1)"""
         new_node = DoubleNode(data)
@@ -254,7 +206,6 @@ class DoublyLinkedList:
             current = current.next
         raise ValueError(f"Valor '{target_data}' no encontrado.")
 
-    # ── Eliminación ────────────────────────────
     def remove(self, data):
         """Elimina el primer nodo con el valor dado. O(n)"""
         current = self._head
@@ -273,9 +224,7 @@ class DoublyLinkedList:
             current = current.next
         raise ValueError(f"Valor '{data}' no encontrado.")
 
-    # ── Búsqueda / Acceso ──────────────────────
     def search(self, data):
-        """Retorna el índice del primer nodo con el valor, o -1. O(n)"""
         current = self._head
         index = 0
         while current:
@@ -286,10 +235,9 @@ class DoublyLinkedList:
         return -1
 
     def get(self, index):
-        """Retorna el dato en la posición dada. O(n)"""
         if index < 0 or index >= self._size:
             raise IndexError(f"Índice {index} fuera de rango.")
-        # Optimización: recorre desde el extremo más cercano
+        
         if index <= self._size // 2:
             current = self._head
             for _ in range(index):
@@ -300,9 +248,7 @@ class DoublyLinkedList:
                 current = current.prev
         return current.data
 
-    # ── Utilidades ─────────────────────────────
     def reverse(self):
-        """Invierte la lista en su lugar. O(n)"""
         current = self._head
         while current:
             current.prev, current.next = current.next, current.prev
@@ -313,7 +259,6 @@ class DoublyLinkedList:
         return [data for data in self]
 
     def to_list_reversed(self):
-        """Recorre desde la cola hacia la cabeza. O(n)"""
         result = []
         current = self._tail
         while current:
@@ -324,7 +269,6 @@ class DoublyLinkedList:
     def is_empty(self):
         return self._size == 0
 
-    # ── Métodos especiales ─────────────────────
     def __len__(self):
         return self._size
 
@@ -344,16 +288,11 @@ class DoublyLinkedList:
     def __repr__(self):
         return f"DoublyLinkedList({self.to_list()!r})"
 
-
-# ──────────────────────────────────────────────
-# DEMO / PRUEBAS BÁSICAS
-# ──────────────────────────────────────────────
 if __name__ == "__main__":
     print("=" * 55)
     print("  MyLinkedList — Demo")
     print("=" * 55)
 
-    # ── Singly ──────────────────────────────────
     print("\n--- SinglyLinkedList ---")
     sll = SinglyLinkedList()
     for val in [10, 20, 30, 40, 50]:
